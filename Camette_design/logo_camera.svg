@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="logo_camera.dxf">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.1631212"
+     inkscape:cx="517.92884"
+     inkscape:cy="504.31454"
+     inkscape:document-units="px"
+     inkscape:current-layer="g3924"
+     showgrid="true"
+     inkscape:window-width="1280"
+     inkscape:window-height="741"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3924">
+      <g
+         id="g3825"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <path
+           style="fill:#000000;fill-opacity:1"
+           d="m 360,547.36218 c 0,63.51275 -51.48725,115 -115,115 -63.51275,0 -115,-51.48725 -115,-115 0,-63.51274 51.48725,-115 115,-115 63.51275,0 115,51.48726 115,115 z"
+           id="path3785" />
+        <path
+           transform="translate(74.730983,105.07617)"
+           style="fill:#ffffff;fill-opacity:1"
+           d="m 220,542.36218 -31.74019,-47.1646 4.15458,56.69814 -18.45157,-53.77248 -10.66155,55.84148 -3.90551,-56.71583 -24.7511,51.17931 10.90671,-55.79411 -37.15391,43.02936 24.97565,-51.07011 L 86.348372,516.54038 123.69091,473.67461 70.000002,492.36218 117.1646,460.622 60.466466,464.77657 114.23894,446.325 58.39746,435.66345 115.1133,431.75795 63.933983,407.00685 119.7281,417.91355 76.698729,380.75964 127.76884,405.73529 95.821803,358.71055 138.68757,396.0531 120,342.36218 l 31.74019,47.16461 -4.15458,-56.69814 18.45157,53.77247 10.66155,-55.84148 3.90551,56.71584 24.7511,-51.17931 -10.90671,55.79411 37.15391,-43.02937 -24.97565,51.07011 47.02474,-31.94703 -37.34254,42.86576 L 270,392.36218 l -47.1646,31.74019 56.69813,-4.15458 -53.77247,18.45158 55.84148,10.66154 -56.71584,3.90551 51.17932,24.7511 -55.79412,-10.90671 43.02937,37.15391 -51.07011,-24.97565 31.94704,47.02474 -42.86577,-37.34254 z"
+           id="path3805" />
+        <path
+           transform="matrix(0.88614682,0,0,0.88614682,25.678328,64.463613)"
+           style="fill:none;stroke:#000000;stroke-width:27.29999924;stroke-miterlimit:4;stroke-opacity:1"
+           d="m 360,547.36218 c 0,63.51275 -51.48725,115 -115,115 -63.51275,0 -115,-51.48725 -115,-115 0,-63.51274 51.48725,-115 115,-115 63.51275,0 115,51.48726 115,115 z"
+           id="path3785-8" />
+        <path
+           transform="matrix(0.55636519,0,0,0.55636519,107.94179,242.31374)"
+           style="fill:none;stroke:#ffffff;stroke-width:27.29999924;stroke-miterlimit:4;stroke-opacity:1"
+           d="m 360,547.36218 c 0,63.51275 -51.48725,115 -115,115 -63.51275,0 -115,-51.48725 -115,-115 0,-63.51274 51.48725,-115 115,-115 63.51275,0 115,51.48726 115,115 z"
+           id="path3785-8-0" />
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path3785-6"
+         d="m 633.53808,547.47391 c 0,63.51275 -51.48725,115 -115,115 -63.51275,0 -115,-51.48725 -115,-115 0,-63.51274 51.48725,-115 115,-115 63.51275,0 115,51.48726 115,115 z"
+         style="fill:#000000;fill-opacity:1"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3805-2"
+         d="m 568.26906,647.55008 -31.74019,-47.1646 4.15458,56.69814 -18.45157,-53.77248 -10.66155,55.84148 -3.90551,-56.71583 -24.7511,51.17931 10.90671,-55.79411 -37.15391,43.02936 24.97565,-51.07011 -47.02474,31.94704 37.34254,-42.86577 -53.69091,18.68757 47.1646,-31.74018 -56.69813,4.15457 53.77247,-18.45157 -55.84148,-10.66155 56.71584,-3.9055 -51.17932,-24.7511 55.79412,10.9067 -43.02937,-37.15391 51.07011,24.97565 -31.94704,-47.02474 42.86577,37.34255 -18.68757,-53.69092 31.74019,47.16461 -4.15458,-56.69814 18.45157,53.77247 10.66155,-55.84148 3.90551,56.71584 24.7511,-51.17931 -10.90671,55.79411 37.15391,-43.02937 -24.97565,51.07011 47.02474,-31.94703 -37.34254,42.86576 53.69091,-18.68757 -47.1646,31.74019 56.69813,-4.15458 -53.77247,18.45158 55.84148,10.66154 -56.71584,3.90551 51.17932,24.7511 -55.79412,-10.90671 43.02937,37.15391 -51.07011,-24.97565 31.94704,47.02474 -42.86577,-37.34254 z"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3785-8-2"
+         d="m 618.22927,549.6186 c 0,56.28162 -45.62527,101.90688 -101.90689,101.90688 -56.28162,0 -101.90688,-45.62526 -101.90688,-101.90688 0,-56.28162 45.62526,-101.90689 101.90688,-101.90689 56.28162,0 101.90689,45.62527 101.90689,101.90689 z"
+         style="fill:none;stroke:#000000;stroke-width:24.19180679;stroke-miterlimit:4;stroke-opacity:1"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3785-8-0-5"
+         d="m 581.77134,546.95873 c 0,35.33629 -28.64572,63.982 -63.982,63.982 -35.33628,0 -63.982,-28.64571 -63.982,-63.982 0,-35.33627 28.64572,-63.98199 63.982,-63.98199 35.33628,0 63.982,28.64572 63.982,63.98199 z"
+         style="fill:none;stroke:#ffffff;stroke-width:15.18876934;stroke-miterlimit:4;stroke-opacity:1"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         style="fill:none;stroke:#000004;stroke-width:27.29999924;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
+         d="m 230,664.36218 300,0 0,140 -300,0 z"
+         id="rect3861"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path3863"
+         d="m 532,730.36218 150,-130 -2,252 z"
+         style="fill:none;stroke:#000000;stroke-width:27;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#000004;fill-opacity:1;stroke:none;stroke-width:50.29016495;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         d="m 437.14759,215.00682 c -238.07298,0 -431.6594302,193.55321 -431.6594302,431.62619 0,238.07299 193.5864502,431.65939 431.6594302,431.65939 238.07298,0 431.62619,-193.5864 431.62619,-431.65939 0,-238.07298 -193.55321,-431.62619 -431.62619,-431.62619 z m 0,53.47552 c 209.16755,0 378.15067,168.98312 378.15067,378.15067 0,209.16756 -168.98312,378.18389 -378.15067,378.18389 -209.16754,0 -378.150678,-169.01633 -378.150678,-378.18389 0,-209.16755 168.983138,-378.15067 378.150678,-378.15067 z"
+         id="path3865"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/nanobapt/Documents/raspcam/g3825.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+  </g>
+</svg>

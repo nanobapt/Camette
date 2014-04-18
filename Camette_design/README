@@ -1,0 +1,13 @@
+Here are SCAD and STL file in order to print Camette
+
+-- camette_box.scad --
+SCAD of the entire camette
+
+-- camette_box_bottom.stl -- 
+
+STL to print Camette bottom case
+
+-- camette_box_top.stl --
+
+STL to print Camette top case
+
