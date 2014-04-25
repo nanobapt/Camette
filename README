@@ -1,0 +1,23 @@
+Camette project
+
+Free, open, highly configurable Camera based on Rapsberry Pi, and Rapsberry Pi camera board.
+
+-- Description of files --
+
+Camette_design/
+STL/SCAD files to print your own camette. 
+
+nodejs/camette.js
+JS function to handle client request
+
+nodejs/camette_node.script_init.d
+Nodejs launch script, to be placed in init.d
+
+scripts/cametteButtonManager
+Button manager launched by cametteButtonManager.script_init.d startup script.
+
+scripts/sync_cam/cametted
+Script to sync several camette
+
+www/
+Everything to manage your Camette from the web server.

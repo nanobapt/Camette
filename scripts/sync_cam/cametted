@@ -1,0 +1,169 @@
+#!/bin/bash
+
+# VARIABLES
+NAME=Master
+
+SERVER="192.168.0.1"
+URL_NOTIFY="server/notify.php"
+URL_ORDER="server/order.php"
+URL_SNAP="server/snap.php"
+
+LOGFILE="/var/log/cametted.log"
+
+STATUS="up"
+DELAY=3
+
+
+
+# Send a request
+function send_req {
+	#exec 3<>/dev/tcp/$1/80
+	#echo -e "GET $2$3 HTTP/1.0\n\n">&3
+	#RES=`cat <&3 | tr '\r' ':'`
+	#echo ${RES##*:}
+	echo $( curl -s http://$1/$2$3 )
+}
+
+# Send a notification request
+function notify {
+	send_req $SERVER $URL_NOTIFY "?name=$NAME&status=$STATUS"
+}
+
+# Ask for an order
+function request_order {
+	echo $(send_req $SERVER $URL_ORDER "?name=$NAME")
+}
+
+# Testing if server is reachable
+function test_connection {
+	conn_res=$(ping -q -w 1 -c 1 $SERVER > /dev/null && echo OK || echo ERROR)
+	echo $conn_res
+}
+
+function make_timelapse {
+	echo Launching timelapse
+	# width, heigth, delay, duration, projet
+	echo $(date "+%d-%M-%Y_%H:%m:%S") Launching timelapse >> $LOGFILE
+	echo raspistill -w $1 -h $2 -q 100 -tl $3 -t $4 -o "/root/$5/"$(date "+%d%H%M%S")_%04d.jpg &
+}
+
+function make_delayed_timelapse {
+	echo "Launching delayed timelapse (cron)"
+	date -d@$6
+	CRON_DATE=$(date -d@$6 '+%m %d %H %M %S %u')
+
+	MINUTE=$(echo $CRON_DATE | cut -d' ' -f4)
+	DAY=$(echo $CRON_DATE | cut -d' ' -f2)
+	DOW=$( expr $(echo $CRON_DATE | cut -d' ' -f6) - 1 )
+	HOUR=$(echo $CRON_DATE | cut -d' ' -f3)
+	MONTH=$(echo $CRON_DATE | cut -d' ' -f1)
+
+	TEMPFILE="camette_cron"
+	crontab -l  >> $TEMPFILE
+	echo -e "$MINUTE\t$HOUR\t$DAY\t$MONTH\t$DOW\t"raspistill -w $1 -h $2 -q 100 -tl $3 -t $4 -o "$5/"$(date "+%d%H%M%S")_\\%04d.jpg >> $TEMPFILE
+	crontab $TEMPFILE
+	rm -f $TEMPFILE
+
+	echo $(date "+%d-%M-%Y_%H:%m:%S") Launching sync timelapse >> $LOGFILE
+}
+
+# Handling argument
+if [ "$1" = "down" ]
+then
+        STATUS="down"
+elif [ "$1" = "-t" ]
+then
+        make_timelapse $1 $2 $3 $4 $5
+        exit 1
+fi
+
+
+#DAEMON STARTS HERE
+
+# Waiting for server availability
+res=$(test_connection)
+
+while [ "$res" != "OK" ]
+do
+	#echo $res Not connected.. sleeping 1 second
+	sleep $DELAY
+	res=$(test_connection)
+done
+
+#Synchronizing NTP
+#/etc/init.d/ntp stop
+ntpdate $SERVER
+
+# Connected.. sending notification
+echo notifying
+notify up
+echo finished notifying
+
+# Asking orders from server..
+loop=1
+CURRENT_TIMESTAMP=0
+
+while [ -n $loop  ]
+do
+	order=$( request_order)
+
+	echo "[$(date "+%d_%m_%Y_%H%M%S")] $order"
+
+	if [[ "$order" == SNAP* ]]
+	then
+
+		# Server wants a snapshot
+		TIMESTAMP=$(echo $order | cut -d' ' -f2)
+
+		if [ $TIMESTAMP != $CURRENT_TIMESTAMP ]
+		then
+			snapshotName=snapshot$(date "+%d%H%M%S").jpg
+			echo "snapshot name: $snapshotName"
+			raspistill -w 2592 -h 1944 -q 100 -o $snapshotName
+			curl -F name=$NAME -F snap=@"$snapshotName" "$SERVER$URL_SNAP"
+			CURRENT_TIMESTAMP=$TIMESTAMP
+		fi
+
+	elif [[ "$order" == LAUNCH* ]]
+	then
+
+		# Let's parse time and cron the timelapse
+		TIMESTAMP=$(echo $order | cut -d' ' -f2)
+
+		if [ $TIMESTAMP != $CURRENT_TIMESTAMP ]
+                then
+			TL_RES_W=$(echo $order | cut -d' ' -f3)
+	                TL_RES_H=$(echo $order | cut -d' ' -f4)
+        	        TL_DELAY=$(echo $order | cut -d' ' -f5)
+                	TL_DURATION=$(echo $order | cut -d' ' -f6)
+                	TL_PROJECT=$(echo $order | cut -d' ' -f7)
+                	TL_STARTTIME=$(echo $order | cut -d' ' -f8)
+
+			# If no timestamp (starttime) 
+			# timelapse should be launche right away
+			if [[ -z "$TL_STARTTIME" ]] 
+			then
+				# width, heigth, delay, duration, $projet
+				make_timelapse $TL_RES_W $TL_RES_H $TL_DELAY $TL_DURATION $TL_PROJECT $TL_STARTTIME
+			else
+				# else the timelapse is launched 
+				# at timstamp using cron
+				make_delayed_timelapse $TL_RES_W $TL_RES_H $TL_DELAY $TL_DURATION $TL_PROJECT $TL_STARTTIME
+			fi
+
+			CURRENT_TIMESTAMP=$TIMESTAMP
+		fi
+
+	elif [ "$order" == "QUIT" ]
+	then
+		# Let's get out of here
+		echo "Safe quit"
+		exit 1
+	elif [ "$order" == "WAIT" ]
+	then
+		# Keep waiting for orders
+		:
+	fi
+
+	sleep $DELAY
+done

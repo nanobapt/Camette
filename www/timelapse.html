@@ -1,0 +1,218 @@
+<html>
+	<head>
+		<title>Timelaps configuration page</title>
+		<link rel="stylesheet" href="/jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css" />
+		<script src="/jquery/js/jquery-1.9.1.js"></script>
+	        <script src="/jquery/js/jquery-ui-1.10.3.custom.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script>
+			$( document ).ready(function() {
+			// connect to node
+			var socket = io.connect('http://192.168.0.1:1234');
+
+			socket.emit('getProjectName');
+
+			var exposureValue = document.getElementById('exposure').value;
+			var cameraHeightValue = document.getElementById('cameraHeight').value;
+			var cameraWidthValue = document.getElementById('cameraWidth').value;
+			socket.emit('configureCamera', {
+				exposure: exposureValue,
+				cameraHeight: cameraHeightValue,
+				cameraWidth: cameraWidthValue
+			});
+
+
+			socket.on('projectName', function (projectName) {
+				if(projectName != "")
+					document.getElementById('projectName').innerHTML = projectName;
+				else
+					document.getElementById('projectName').innerHTML = 'default';
+			});
+
+			socket.on('newImage', function (filename) {
+				document.getElementById('snapshotImage').src = document.getElementById('snapshotImage').src+ '?' + Math.random();
+				document.getElementById('snapshotImage').style.visibility='visible';
+				$( "#dialog" ).dialog("close");
+			});
+
+			socket.on('stillWorking', function(){
+				document.getElementById('alertText').innerHTML = 'Camera is working please wait ...';
+                                $( "#dialog" ).dialog("open");
+			});
+
+			socket.on('cameraStopped', function(){
+                                $( "#dialog" ).dialog("close");
+                        });
+
+			socket.on('renderingStopped', function(){
+				$( "#dialog" ).dialog("close");
+			});
+
+			socket.on('mencoderStdout', function(data){
+                                document.getElementById('alertText').innerHTML = '<p>Waiting for the movie to be render ...</p><p>Note: it can take some while.</p>';
+                        });
+
+			// default timelapse values
+			var spinnerMinutes = $( "#minutes" ).spinner(); 
+			spinnerMinutes.spinner("value", 0);
+			var spinnerHours = $( "#hours" ).spinner(); 
+			spinnerHours.spinner("value", 3);
+			var spinnerSeconds = $( "#seconds").spinner(); 
+			spinnerSeconds.spinner("value", 0);
+			var spinnerInterval = $( "#interval").spinner(); 
+                        spinnerInterval.spinner("value", 1000);
+			spinnerInterval.spinner("option", "min", 10);
+
+			/* Button to submit */
+
+			// start render button
+			$( "#startRendering" ).button().click(function( event ) {
+                                event.preventDefault();
+				socket.emit('startRendering', {
+					fps:document.getElementById('fps').value,
+					bitrate:document.getElementById('bitrate').value
+					});
+				document.getElementById('alertText').innerHTML = '<p>Waiting for the movie to be render ...</p><p>Note: it can take some while.</p>';
+                                $( "#dialog" ).dialog("open");
+			});
+
+			// start timelapse button
+			$( "#startTimelaps" ).button().click(function( event ) {
+				event.preventDefault();
+				document.getElementById('alertText').innerHTML = 'Timelapse running ...';
+                                $( "#dialog" ).dialog("open");
+				socket.emit('startTimelaps', { 
+					interval: spinnerInterval.spinner('value'),
+					hours: spinnerHours.spinner('value'),
+	                                minutes: spinnerMinutes.spinner('value'),
+                                	seconds: spinnerSeconds.spinner('value')
+				});
+			});
+
+			$( "#seeProjects" ).button().click(function( event ) {
+                                event.preventDefault();
+                                window.location.href = '/timelapse_movies';
+                        });
+
+			$( "#accordion" ).accordion({ active: false, collapsible: true });
+			// Take snapshot when accordion 'take snapshot' is active
+			$( "#accordion" ).accordion({
+				activate: function( event, ui ){
+					if(ui.oldHeader.attr("id") == 'configureCamera'){
+						var exposureValue = document.getElementById('exposure').value;
+						var cameraHeightValue = document.getElementById('cameraHeight').value;
+						var cameraWidthValue = document.getElementById('cameraWidth').value;
+						socket.emit('configureCamera', {
+							exposure: exposureValue,
+							cameraHeight: cameraHeightValue,
+							cameraWidth: cameraWidthValue
+						});
+					}
+					if(ui.newHeader.attr("id") == 'takeSnapshot'){
+						document.getElementById('alertText').innerHTML = 'Waiting for the picture to be taken ...';
+		                                $( "#dialog" ).dialog("open");
+	        	                        socket.emit('takeSnapshot');
+					}
+				}
+			});
+			
+			$( "#dialog" ).dialog({
+				dialogClass: "no-close",
+			});
+			$( "#dialog" ).dialog("close");
+		
+			document.getElementById('snapshotImage').style.visibility='hidden';
+
+
+			});
+
+		</script>
+
+
+		<style type="text/css">
+			#hours{width:100px;}
+			#minutes{width:100px;}
+			#seconds{width:100px;}
+			#interval{width: 100px;}
+
+			#wrap{
+				width:100%;
+				text-align:center;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div id=wrap>
+		<p>Project name: <div id='projectName'></div></p>
+
+		<div id="accordion">
+                        <h3>Quick timelapse run</h3>
+                        <div>
+				<p><h1>Take a snapshot every</h1> </p>
+				<p><label for="interval">MilliSeconds</label><input id="interval" name="value" /></p>
+				<p><h1>During</h1></p>
+				<p>
+				<table style="border:0px;width:100%;text-align:center;"><tr>
+				<td><label for="hours">Hours </label><input id="hours" name="value" /></td></tr><tr>
+				<td><label for="minutes">Minutes</label><input id="minutes" name="value" /></td></tr><tr>
+				<td><label for="seconds">Seconds </label><input id="seconds" name="value" /></td>
+				</tr></table>
+				</p>
+
+				<p><button id='startTimelaps'>Start Timelaps</button></p>
+			</div>
+
+			<h3 id="configureCamera">Configure Camera</h3>
+			<div>
+				<table style="border:0px;width:100%;text-align:center;">
+                                        <tr><td style="text-align:right; width:50%;">Exposure type</td><td style="text-align:left;width:50%;">
+						<select id="exposure">
+							<option value="auto" selected="selected">Auto</option>
+							<option value="off">Off</option>
+							<option value="night">Night</option>
+							<option value="nightpreview">Night Preview</option>
+							<option value="backlight">Backlight</option>
+							<option value="spotlight">Spotlight</option>
+							<option value="sports">Sports</option>
+							<option value="snow">Snow</option>
+							<option value="beach">Beach</option>
+							<option value="verylong">Very Long</option>
+							<option value="fixedfps">Fixed FPS</option>
+							<option value="antishake">Antishake</option>
+							<option value="fireworks">Fireworks</option>
+						</select>
+					</td></tr>
+					<tr><td style="text-align:right; width:50%;">Camera Width</td><td style="text-align:left;width:50%;"><input type="text" id="cameraWidth" value="1920"/></td></tr>
+					<tr><td style="text-align:right; width:50%;">Camera Height</td><td style="text-align:left;width:50%;"><input type="text" id="cameraHeight" value="1080"/></td></tr>
+					</table>
+					<p>Resolution Example: 640x480, 1280x1024 pixels, max: 2592x1944 pixels</p>
+
+			</div>
+
+			<h3 id='takeSnapshot'>Camera realtime overview</h3>
+                        <div>
+                                <img id="snapshotImage" src="/timelapse_movies/snapshot.png"/>
+
+                        </div>
+			
+			<h3>Render movie</h3>
+			<div>
+				<table style="border:0px;width:100%;text-align:center;">
+					<tr><td style="text-align:right; width:50%;">Frame per second</td><td style="text-align:left;width:50%;"><input type="text" id="fps" value="10"/></td></tr>
+					<tr><td style="text-align:right; width:50%;">Bitrate</td><td style="text-align:left;width:50%;"><input type="text" id="bitrate" value="800"/></td></tr>
+				</table>
+				<p><button id='startRendering'>Start Rendering</button><button id='seeProjects'>See Projects Directory</button></p>
+			</div>
+
+		</div>
+		<div id="dialog" title="Please wait ...">
+			<p id="alertText"></p>
+		</div>
+
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,206 @@
+<html>
+	<head>
+		<title>Camette Manager</title>
+		<link rel="stylesheet" href="/jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css" />
+		<script src="/jquery/js/jquery-1.9.1.js"></script>
+	        <script src="/jquery/js/jquery-ui-1.10.3.custom.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<style>
+			.custom-combobox {
+				position: relative;
+				display: inline-block;
+				margin-right:40px;
+			}
+			.custom-combobox-toggle {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				margin-left: -1px;
+				padding: 0;
+				/* support: IE7 */
+				*height: 1.7em;
+				*top: 0.1em;
+			}
+			.custom-combobox-input {
+				margin: 0;
+				padding: 0.3em;
+			}
+		</style>
+		<script>
+			$( document ).ready(function() {
+			// connect to node
+			var socket = io.connect('http://192.168.0.1:1234');
+			
+			$( "#sendSyncCommand" ).button().click(function( event ) {
+                                event.preventDefault();
+                                socket.emit('sendSyncCommand', document.getElementById('syncCommandName').value);
+                        });
+
+			socket.on('orderSent', function(){$( "#dialog-message" ).dialog("open");});
+
+			$(function() {
+				$( "#dialog-message" ).dialog({
+					modal: true,
+					autoOpen: false,
+					buttons: {
+						Ok: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
+			});
+
+			(function( $ ) {
+				$.widget( "custom.combobox", {
+					_create: function() {
+						this.wrapper = $( "<span>" )
+						.addClass( "custom-combobox" )
+						.insertAfter( this.element );
+						this.element.hide();
+						this._createAutocomplete();
+						this._createShowAllButton();
+				},
+				_createAutocomplete: function() {
+					var selected = this.element.children( ":selected" ),
+					value = selected.val() ? selected.text() : "";
+					this.input = $( "<input>" )
+					.appendTo( this.wrapper )
+					.val( value )
+					.attr( "title", "" )
+					.addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+					.autocomplete({
+						delay: 0,
+						minLength: 0,
+						source: $.proxy( this, "_source" )
+					})
+					.tooltip({
+						tooltipClass: "ui-state-highlight"
+					});
+					this._on( this.input, {
+						autocompleteselect: function( event, ui ) {
+							ui.item.option.selected = true;
+							this._trigger( "select", event, {
+								item: ui.item.option
+							});
+						},
+						autocompletechange: "_removeIfInvalid"
+					});
+				},
+				_createShowAllButton: function() {
+					var input = this.input,
+					wasOpen = false;
+					$( "<a>" )
+					.attr( "tabIndex", -1 )
+					.attr( "title", "Show All Items" )
+					.tooltip()
+					.appendTo( this.wrapper )
+					.button({
+						icons: {
+							primary: "ui-icon-triangle-1-s"
+						},
+						text: false
+					})
+					.removeClass( "ui-corner-all" )
+					.addClass( "custom-combobox-toggle ui-corner-right" )
+					.mousedown(function() {
+						wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+					})
+					.click(function() {
+						input.focus();
+						// Close if already visible
+						if ( wasOpen ) {
+							return;
+						}
+						// Pass empty string as value to search for, displaying all results
+						input.autocomplete( "search", "" );
+					});
+				},
+				_source: function( request, response ) {
+					var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+					response( this.element.children( "option" ).map(function() {
+						var text = $( this ).text();
+						if ( this.value && ( !request.term || matcher.test(text) ) )
+						return {
+							label: text,
+							value: text,	
+							option: this
+						};
+					}) );
+				},
+				_removeIfInvalid: function( event, ui ) {
+					// Selected an item, nothing to do
+					if ( ui.item ) {
+						return;
+					}
+					// Search for a match (case-insensitive)
+					var value = this.input.val(),
+					valueLowerCase = value.toLowerCase(),
+					valid = false;
+					this.element.children( "option" ).each(function() {
+						if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+							this.selected = valid = true;
+							return false;
+						}
+					});
+					// Found a match, nothing to do
+					if ( valid ) {
+						return;
+					}
+					// Remove invalid value
+					this.input
+						.val( "" )
+						.attr( "title", value + " didn't match any item" )
+						.tooltip( "open" );
+					this.element.val( "" );
+					this._delay(function() {
+						this.input.tooltip( "close" ).attr( "title", "" );
+					}, 2500 );
+					this.input.data( "ui-autocomplete" ).term = "";
+				},
+				_destroy: function() {
+					this.wrapper.remove();
+					this.element.show();
+				}
+			});
+			})( jQuery );
+
+			$( "#syncCommandName" ).combobox();
+
+			});
+
+		</script>
+
+
+		<style type="text/css">
+			#wrap{
+				width:100%;
+				text-align:center;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div id=wrap>
+		<p><h1>Synchronise Camettes</h1> </p>
+		<p><h2>Everything to send synchronous command to several camette</h2></p>
+
+		<p>
+			<select id="syncCommandName">
+			        <option value="snap">Get snapshots</option>
+			        <option value="launch">Launch timelapse</option>
+		        	<option value="quit">Exit sync</option>
+			</select>
+			<button id='sendSyncCommand'>Send Command</button></p>
+
+
+			<div id="dialog-message" title="Download complete">
+				<p>
+					<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+					The order have been send.
+				</p>
+			</div>
+		</div>
+
+	</body>
+</html>
