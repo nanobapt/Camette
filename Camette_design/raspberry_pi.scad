@@ -40,7 +40,7 @@ translate([length-43.6-1,width-12,height+1]){
 module audio ()
 {
 //audio jack
-translate([length-26,width-11.5,height]){
+translate([length-25.5,width-11.5,height]){
         color("yellow")
         cube([12,11.5,13]);
         translate([6,11.5,8])

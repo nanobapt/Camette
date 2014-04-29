@@ -1,0 +1,56 @@
+#!/bin/bash
+# Camette manager
+# Take /etc/camette.conf and start camette needed program
+
+source /etc/camette.conf
+
+# Killall remainning processes if any
+kill -9 $(ps aux |grep "node" | awk '{print $2}' |head -1) &> /dev/null
+kill -9 $(ps aux |grep "raspimjpeg" | awk '{print $2}' |head -1) &> /dev/null
+kill -9 $(ps aux |grep "cametteButtonManager" | awk '{print $2}' |head -1) &> /dev/null
+kill -9 $(ps aux |grep "sync_camettes" | awk '{print $2}' |head -1) &> /dev/null
+kill -9 $(ps aux |grep "servod" | awk '{print $2}' |head -1) &> /dev/null
+kill -9 $(ps aux |grep "raspistill" | awk '{print $2}' |head -1) &> /dev/null
+kill -9 $(ps aux |grep "camette-run-timelapse" | awk '{print $2}' |head -1) &> /dev/null
+
+# Start every process according to camette.conf
+if [ $NODE_STARTUP == true ]
+then
+	echo "Starting Node ..."
+	/usr/local/bin/node /root/camette.js &>/var/log/camette/nodecamette.log &
+fi
+
+if [ $RASPIMJPEG_STARTUP == true ]
+then
+	echo "Starting RaspiMJPEG"
+	/usr/bin/camette/raspimjpeg &> /var/log/camette/raspimjpeg &
+fi
+
+if [ $CAMETTEBUTTON_STARTUP == true ]
+then
+	echo "Starting Camette Button Manager"
+	/usr/bin/camette/cametteButtonManager &> /var/log/camette/cametteButtonManager.log
+fi
+
+
+if [ $SYNCCAMETTES_STARTUP == true ]
+then
+        echo "Starting Camette synchronizing program"
+        /usr/bin/camette/sync_camettes &> /var/log/camette/sync_camettes.log &
+fi
+
+if [ $SERVO_DAEMON == true ]
+then
+	echo "Starting Servo Daemon"
+	# configure servoblaster for GPIO4 and GPIO17
+	/root/PiBits/ServoBlaster/user/servod --p1pins=7,11
+fi
+
+# Start timelapse script if needed
+
+source /etc/cametteTimelapse.conf
+
+if [ $RUNATBOOT == true ]
+then
+	/usr/bin/camette/camette-run-timelapse &
+fi

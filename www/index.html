@@ -6,59 +6,11 @@
 	        <script src="/jquery/js/jquery-ui-1.10.3.custom.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
-		<script>
-			$( document ).ready(function() {
-			// connect to node
-			var socket = io.connect('http://192.168.0.1:1234');
-			
-			$( "#accordion" ).accordion({ active: false, collapsible: true });
+		<script src="/scripts/variables.js"></script>
+		<script src="/scripts/preview.js"></script>
+		<script src="/scripts/index.js"></script>
 
-			$( "#createProject" ).button().click(function( event ) {
-                                event.preventDefault();
-                                socket.emit('createProject', document.getElementById('projectName').value);
-                        });
-
-			$( "#continueProject" ).button().click(function( event ) {
-                                event.preventDefault();
-                                socket.emit('continueProject', document.getElementById('projectName').value);
-                        });
-
-			$( "#seeProjects" ).button().click(function( event ) {
-                                event.preventDefault();
-				window.location.href = '/timelapse_movies';
-                        });
-
-			$( "#synchroniseCamettes" ).button().click(function( event ) {
-                                event.preventDefault();
-                                window.location.href = '/server/sync.html';
-                        });
-
-
-			$( "#seeSnapshots" ).button().click(function( event ) {
-                                event.preventDefault();
-                                window.location.href = '/snapshots';
-                        });
-
-			$( "#recordedSounds" ).button().click(function( event ) {
-                                event.preventDefault();
-                                window.location.href = '/recordedsounds';
-                        });
-
-			socket.on('projectCreated', function(){window.location.href = 'timelapse.html';});
-			socket.on('projectAlreadyExist', function(){alert('Project already exist, please choose an other name.');});
-			socket.on('projectDoesntExist', function(){alert('Project Doesnt exist, please choose an other name.');});
-
-			});
-
-		</script>
-
-
-		<style type="text/css">
-			#wrap{
-				width:100%;
-				text-align:center;
-			}
-		</style>
+		<link rel="stylesheet" href="/css/common.css"/>
 
 	</head>
 
@@ -76,11 +28,15 @@
 					<button id='continueProject'>Continue Project</button>
 				</p>
 			</div>
+
+		<h3 id="preview_accordion">Preview</h3>
+                        <div><img id="preview_img" src="preview.jpg" width="512"></div>
+
+
 		<h3>Record a video</h3>
 			<div><p>Under Development</p></div>
 
 		</div>
-
 
 		<p><button id='seeProjects'>See Projects Directory</button><button id='seeSnapshots'>See Snapshots</button><button id='recordedSounds'>Recorded Sounds</button><button id='synchroniseCamettes'>Synchronise Camettes</button></p>
 		</div>

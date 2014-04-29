@@ -1,0 +1,18 @@
+$( document ).ready(function() {
+
+$( "#accordion" ).accordion({ active: false, collapsible: true });
+
+$( "#accordion" ).accordion({
+	activate: function( event, ui ){
+                if(ui.oldHeader.attr("id") == 'preview_accordion'){
+			socket.emit('raspimjpeg', 'start');
+			stop_preview();
+                }
+		if(ui.newHeader.attr("id") == 'preview_accordion'){
+			socket.emit('raspimjpeg', 'stop');
+			start_preview();
+		}
+	}
+});
+
+});

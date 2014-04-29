@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>Servo Manager</title>
+		<link rel="stylesheet" href="/jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css" />
+		<script src="/jquery/js/jquery-1.9.1.js"></script>
+	        <script src="/jquery/js/jquery-ui-1.10.3.custom.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script src="/scripts/variables.js"></script>
+		<script src="/scripts/preview.js"></script>
+		<script src="/scripts/servo.js"></script>
+
+		<link rel="stylesheet" href="/css/common.css"/>
+	</head>
+
+	<body>
+		<div id=wrap>
+		<p><h1>Camette Servo manager</h1> </p>
+
+		<div id="accordion">
+			<h3 id="preview_accordion">Define camera position</h3>
+                        <div>
+				<table border="0px" style="width=600px; height:400px;" class="center"><tr><td>
+					<div id="servo_y_pos" style="height:288px;"></div> 
+				</td><td>
+					<img id="preview_img" src="preview.jpg" width="512">
+				</td></tr><tr><td>
+					<p>
+					<label for="amount">X:</label>
+					<input type="text" id="XValue" style="border:0; color:#f6931f; font-weight:bold;width:30px;"/>
+					</p><p>
+					<label for="amount">Y:</label>
+					<input type="text" id="YValue" style="border:0; color:#f6931f; font-weight:bold;width:30px;"/>
+					</p>
+				</td><td>
+					<div id="servo_x_pos" style="width:512px;"></div>
+				</td></tr></table>
+				<p><button id='setNewPos'>Set New Position</button><button id='resetAllPos'>Reset All Positions</button></p>
+			</div>
+		</div>
+
+		<p><button id='synchroniseCamettes'>Synchronise Camettes</button></p>
+
+		<div id="positionSetDialog" title="Position Set">
+			<p>
+				<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+				The new Camera position have been set
+			</p>
+		</div>
+
+		<div id="resetPositionDialog" title="Positions Resetted">
+                        <p>
+                                <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+                                All old positions have been resetted.
+                        </p>
+                </div>
+
+		</div>
+
+	</body>
+</html>

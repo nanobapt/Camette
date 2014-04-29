@@ -1,0 +1,46 @@
+#!/bin/bash
+# Running timelapse according to /etc/cametteTimelapse.conf configuration file
+
+source /etc/cametteTimelapse.conf
+
+# Global Variable
+DATE=$(date "+%d%H%M%S")
+TIMELAPSENAME="$TIMELAPSEPATH"/"$DATE"
+CAMETTEPOSDIR=/var/tmp/camettepos/
+
+# Create target directory if don't exist
+if [ ! -d "$TIMELAPSEPATH" ]; then
+	mkdir $TIMELAPSEPATH
+fi
+
+# run timelapse
+raspistill -w $WIDTH -h $HEIGHT -ex $EXPOSURE -q 100 -tl $INTERVAL -t $TIMEOUT -o "$TIMELAPSENAME"_%04d.jpg &
+
+# rasberry cam angle 54x41
+
+if [ $USESERVO == true ]
+then
+	NBSHOTS=0
+	SERVOCOMMANDS=$(ls $CAMETTEPOSDIR)
+	
+	while [ true ] 
+	do
+		NBPOS=0
+		for POS in $SERVOCOMMANDS; do
+			# move to next position
+			source $CAMETTEPOSDIR/$POS
+			
+			# Wait till a new file come
+			FILE=$(ls "$TIMELAPSENAME"_*.jpg 2> /dev/null)
+			while [ "$FILE" == "" ]
+			do
+				FILE=$(ls "$TIMELAPSENAME"_*.jpg 2> /dev/null)
+			done
+
+			mv "$FILE" "$TIMELAPSEPATH"/"$NBPOS"_"$DATE"_$(printf "%04d" $NBSHOTS).jpg
+			NBPOS=$((NBPOS+1))
+
+        	done
+		#NBSHOTS=$(($NBSHOTS+1))
+	done
+fi

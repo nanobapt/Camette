@@ -1,0 +1,9 @@
+#wrap{
+	width:100%;
+	text-align:center;
+}
+
+table.center{
+	margin-left:auto;
+	margin-right:auto;
+}
